@@ -10,34 +10,47 @@ Mini Statement
 """
 
 import datetime
-import pandas as pd
+from Bank import  createAcc, update_df, print_users, deposit, withdraw, transfer, userSettings
 
-users = []
-account_numbers = []
-default_acc = 100000
+if __name__ == "__main__":
 
-class User():
-    def __init__(self, name: str, email: str, number: int):
-        self. name = name
-        self.email = email
-        self.number = number
+    while True: 
+        print("ATM Machine")
+        print("1. Create an Account")
+        print("2. Deposit Money")
+        print("3. Withdraw Money")
+        print("4. Transfer Money")
+        print("5. User Settings")
+        print("6. Views users")
+        print("7. Exit")
 
-    def accountNumber(self): 
-        account_numbers.append(default_acc)
+        try: 
+            option = int(input("\nChoose an option: "))
 
-        last_account = account_numbers[-1]
-        account_number += last_account
-        return 
-    
-    def add_user(self):
-        name = input("Enter user name: ")
-        email  = input("Enter email: ")
-        number = int(input("Enter phone number: "))
-        balance = 0.0
-    
-    def append(self): 
+            if option == 1: 
+                update_df()
+            
+            elif option == 2: 
+                deposit()
+            
+            elif option == 3:
+                withdraw()
+            
+            elif option == 4:
+                transfer()
+            
+            elif option == 5:
+                userSettings()
+            
+            elif option == 6:
+                print_users()
+            
+            elif option == 7:
+                print("Exiting...")
+                break
+
+            else:
+                print("Invalid option. Select right option..")
         
-
-
-
-
+        except ValueError as e: 
+            print(f"Invalid input error as: {e}")
