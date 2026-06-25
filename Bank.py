@@ -199,8 +199,57 @@ def withdraw(user_index):
     else:
         print("\nYou have no suffient funds to withdraw")
     
-def transfer():
-    print("\nTransfer Money")
+def transfer(user_index):
+    global df
+    balance = df.iloc[user_index]["Balance"]
+
+    
+    try:
+        account = int(input("\nEnter account you want to send to: "))
+        
+    except ValueError:
+        print("Invalid input. Please enter a Valid Account number: ")
+    
+    receiver_index = search(account)
+    if receiver_index is None:
+        print("Account Not found!")
+        return
+    else:
+        print(f"Do you want to transfer to: {df.iloc[receiver_index]["Name"]}?")
+        try:
+            option = input("Y/N: ").lower()
+
+            if option == 'y':
+                try:
+                    amount = float(input("\nHow much would you like to transfer: "))
+                    receiver_balance = df.iloc[receiver_index]["Balance"]
+
+                    if amount < balance:
+                        new_balance = balance - amount
+                        df.at[user_index, "Balance"] = new_balance
+                        df.to_csv("All_Users.csv", index=False)
+
+                        new_receiver_balance = receiver_balance + amount
+                        df.at[receiver_index, "Balance"] = new_receiver_balance
+                        df.to_csv("All_Users.csv", index=False)
+                        print(f"\nSuccessfully transfered R{amount} to {df.iloc[receiver_index]["Name"]}")
+
+                    else:
+                        print("\nInsuficient Balance to make transfer")
+                        
+                except ValueError:
+                    print("Invalid input. Please enter a float amount.")
+
+            elif option == 'n':
+                return
+            
+            else:
+                print("Invalid option. Choose a valid Option!!")
+        
+        except ValueError:
+            print("Invalid option. Choose a Valid Option")
+
+    
 
 def getStatement():
     print("\nGet Statement")
