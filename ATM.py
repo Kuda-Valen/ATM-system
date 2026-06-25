@@ -10,18 +10,15 @@ Mini Statement
 """
 
 import datetime
-from Bank import  createAcc, update_df, print_users, deposit, withdraw, transfer, userSettings
+from Bank import  createAcc, update_df, print_users, deposit, withdraw, transfer, userSettings, log_in
 
 if __name__ == "__main__":
 
     while True: 
         print("ATM Machine")
         print("1. Create an Account")
-        print("2. Deposit Money")
-        print("3. Withdraw Money")
-        print("4. Transfer Money")
-        print("5. User Settings")
-        print("6. Views users")
+        print("2. Log In")
+        print("3. Views users")
         print("7. Exit")
 
         try: 
@@ -31,18 +28,9 @@ if __name__ == "__main__":
                 update_df()
             
             elif option == 2: 
-                deposit()
+                log_in()
             
             elif option == 3:
-                withdraw()
-            
-            elif option == 4:
-                transfer()
-            
-            elif option == 5:
-                userSettings()
-            
-            elif option == 6:
                 print_users()
             
             elif option == 7:
