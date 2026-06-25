@@ -161,8 +161,43 @@ def deposit(user_index):
     df.to_csv("All_Users.csv", index=False)
     
     
-def withdraw():
-    print("\nWithdraw Money")
+def withdraw(user_index):
+    global df
+    balance = df.iloc[user_index]["Balance"]
+    current_vault = get_atm_vault_cash()
+
+    try:
+        amount = float(input("\nHow much would you like to withdraw: "))
+    except ValueError:
+        print("Invalid input. Enter valid input!!")
+        
+    #if amount < balance and amount < current_vault:
+        #new_balance = balance - amount
+        #new_vault = current_vault - amount
+
+        #update_atm_vault_cash(new_vault)
+        #df.at[user_index, "Balance"] = new_balance
+        #df.to_csv("All_Users.csv", index=False)
+
+        #print(f"\nSuccessfully withdrawn: R{amount}")
+
+
+    if amount <= balance:
+        if amount <= current_vault:
+            new_balance= balance - amount
+            new_vault = current_vault - amount
+
+            update_atm_vault_cash(new_vault)
+            df.at[user_index, "Balance"] = new_balance
+            df.to_csv("All_Users.csv", index=False)
+
+            print(f"\nSuccessfully withdrawn: R{amount}")
+        
+        else:
+            print("\nATM has no suffient funds to withdraw")
+
+    else:
+        print("\nYou have no suffient funds to withdraw")
     
 def transfer():
     print("\nTransfer Money")
@@ -186,7 +221,7 @@ def log_in():
     print(f"\nBalance: {df.iloc[user_index]["Balance"]:.2f}")
     
     while True:
-        print("1. Deposit")
+        print("\n1. Deposit")
         print("2. Withdraw")
         print("3. Transfer")
         print("4. Get Statement")
