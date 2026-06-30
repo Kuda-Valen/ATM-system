@@ -33,7 +33,7 @@ def update_atm_vault_cash(new_amount):
     with open(ATM_CONFIG_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
-def userSettings():
+def userSettings(user_index):
     while True:
         print("\n1. Change Pin")
         print("2. Change email")
@@ -44,13 +44,21 @@ def userSettings():
             option = int(input("\nChoose an Option: "))
 
             if option == 1:
-                print("Change Pin")
+                new_pin = input("\nEnter new 4-digit pin: ")
+                new_hashed_pin = hash_pin(new_pin)
+                df.at[user_index, "Pin"] = new_hashed_pin
+                df.to_csv("All_Users.csv", index=False)
+
             
             elif option == 2:
-                print("Change Email")
+                new_email = input("\nEnter new email address: ")
+                df.at[user_index, "Email"] = new_email
+                df.to_csv("All_Users.csv", index=False)
             
             elif option == 3:
-                print("Change Number")
+                new_number = str(input("\nEnter new number: "))
+                df.at[user_index, "Number"] = new_number
+                df.to_csv("All_Users.csv", index=False)
             
             elif option == 4:
                 return
@@ -68,7 +76,7 @@ def createAcc(existing_df):
     name = input("Enter user name: ")
     surname = input("Enter your surname: ")
     email  = input("Enter email: ")
-    number = input("Enter phone number: ")
+    number = str(input("Enter phone number: "))
     balance = 0.0
 
         # Getting account Number
@@ -294,7 +302,7 @@ def log_in():
                 getStatement(user_index)
                 
             elif option == 5:
-                userSettings()
+                userSettings(user_index)
 
             elif option == 6:
                 print("Back to Main menu!")
@@ -305,3 +313,60 @@ def log_in():
 
         except ValueError as e:
             print(f"Invalid option! Error: {e}")
+
+def forgot_pin():
+    global df
+
+    try: 
+        acc_num = int(input("Enter Account number: "))
+    except ValueError:
+        print("Invalid account number format.")
+        return None
+    
+    user_index = search(acc_num)
+
+    if user_index is None:
+        print("Account Number not found")
+        return None
+    
+    user_row = df.iloc[user_index]
+
+    email = input("\nEnter email: ")
+    phone_number = input("Enter phone number: ")
+    name = input("Enter your first name: ")
+    surname = input("Enter your surname: ")
+
+    counter = 0
+    if email.lower() == user_row["Email"].lower():
+        counter += 1
+    else:
+        counter = counter
+    
+    if phone_number == str(user_row["Number"]): 
+        counter += 1
+    else:
+        counter = counter
+    
+    if name.lower() == user_row["Name"].lower():
+        counter += 1
+    else:
+        counter = counter
+    
+    if surname.lower() == user_row["Surname"].lower():
+        counter += 1
+    
+    else:
+        counter = counter
+
+    if counter >= 3:
+        print("Successfully Authenticated!")
+        new_pin = input("Enter new 4-digit pin: ")
+        new_hashed_pin = hash_pin(new_pin)
+
+        df.at[user_index, "Pin"] = new_hashed_pin
+        df.to_csv("All_Users.csv", index=False)
+    
+    else:
+        print("\nAuthentication failed!")
+        print(f"Your score was: {counter} out of 4 personal questions")
+

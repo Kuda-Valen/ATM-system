@@ -10,7 +10,7 @@ Mini Statement
 """
 
 import datetime
-from Bank import  createAcc, update_df, print_users, deposit, withdraw, transfer, userSettings, log_in
+from Bank import  createAcc, update_df, print_users, deposit, withdraw, transfer, userSettings, log_in, forgot_pin
 
 if __name__ == "__main__":
 
@@ -18,7 +18,8 @@ if __name__ == "__main__":
         print("ATM Machine")
         print("1. Create an Account")
         print("2. Log In")
-        print("3. Views users")
+        print("3. Forgot Pin")
+        print("4. Views users")
         print("7. Exit")
 
         try: 
@@ -29,8 +30,11 @@ if __name__ == "__main__":
             
             elif option == 2: 
                 log_in()
-            
+
             elif option == 3:
+                forgot_pin()
+            
+            elif option == 4:
                 print_users()
             
             elif option == 7:
